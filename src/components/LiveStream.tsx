@@ -138,7 +138,7 @@ export default function LiveStream() {
   };
 
   const btnStyle = (active: boolean, red: boolean = false) => ({
-    width: '64px', height: '64px', borderRadius: '50%', border: 'none',
+    width: '64px', height: '64px', borderRadius: '50%', 
     display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
     backgroundColor: red ? '#ff3b30' : (active ? 'rgba(255,255,255,0.1)' : '#ff3b30'),
     color: '#fff', transition: 'all 0.2s', backdropFilter: 'blur(15px)', border: '1px solid rgba(255,255,255,0.1)'
