@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 const API_KEY = process.env.GOOGLE_API_KEY;
-// Using the alias that works with your specific Google Cloud project
-const MODEL_NAME = 'gemini-flash-latest';
+// Upgrading to the cutting-edge Gemini 2.5 Flash model
+const MODEL_NAME = 'gemini-2.5-flash';
 
 export const config = {
   api: {
