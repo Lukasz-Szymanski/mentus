@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 const API_KEY = process.env.GOOGLE_API_KEY;
 const MODEL_NAME = 'gemini-1.5-flash'; 
 
