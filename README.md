@@ -1,31 +1,43 @@
-# Mentus - AI Reality Companion
+# Mentus - Cinematic AI Reality Companion
 
-**Mentus** is a real-time, multimodal AI mentor designed to guide you through physical tasks. Powered by **Google Gemini 1.5 Flash**, it sees what you see, hears what you say, and provides instant audio-visual guidance.
+**Mentus** is a futuristic, multimodal AI mentor designed for physical tasks. By combining computer vision with real-time speech recognition, it acts as a hands-free guide for cooking, DIY, mechanics, and more.
 
 Built for the **Google Gemini 3 Global Hackathon**.
 
-![Status](https://img.shields.io/badge/Status-Beta_v3.0-success) ![Stack](https://img.shields.io/badge/Stack-Next.js_14_|_Node_|_Gemini_Flash-blue)
+![Status](https://img.shields.io/badge/Status-Stable_v3.1-success) ![UI](https://img.shields.io/badge/UI-Cinematic_Glassmorphism-blueviolet)
 
-## ✨ Key Features
+---
 
-- **Vision:** Real-time analysis of your camera feed (snapshots every 10s).
-- **Voice:** Understands your spoken questions via browser Speech Recognition.
-- **Speech:** Replies to you with natural Text-to-Speech synthesis.
-- **Design:** Premium, minimalist UI inspired by modern OS aesthetics.
-- **Architecture:** Robust REST-based integration ensuring stability on all API tiers.
+## 🌟 Vision & Experience
 
-## 🛠 Tech Stack
+Mentus provides an **Immersive AI Experience**. Instead of a traditional chat interface, it uses a cinematic, full-window camera feed overlaid with floating "glass" UI elements. 
 
-- **Frontend:** Next.js 16 (App Router), TypeScript, Tailwind CSS.
-- **Backend:** Custom Node.js Server (`server.ts`) handling Multimodal Relay.
-- **AI Model:** Google Gemini 1.5 Flash (via Direct REST API).
-- **APIs:** WebSocket (Transport), Web Speech API (STT/TTS).
+- **Vision:** Gemini 1.5 Flash analyzes your surroundings through your camera.
+- **Voice:** Speak naturally; Mentus transcribes your questions locally.
+- **Speech:** Mentus replies using high-quality Text-to-Speech synthesis.
+
+## 🛠 Features
+
+- **Multimodal Feedback Loop:** Analyzes image snapshots + voice transcripts simultaneously.
+- **Dynamic Status Island:** Visual indicators for "Listening" and "Analyzing" states.
+- **Privacy-First:** Secure Node.js proxy handles API interactions.
+- **Premium Design:** Minimalist aesthetics inspired by modern OS design (Apple/Tesla).
+- **Control Bar:** Quick toggles for Camera and Microphone privacy.
+
+## 🏗 Architecture
+
+Mentus uses a **Hybrid Snapshot Architecture**:
+1. **Client:** Captures media, runs local STT (Speech-to-Text), and renders the UI.
+2. **Server (Proxy):** Relays multimodal data to Google's Generative AI servers.
+3. **Brain:** Powered by **Gemini 1.5 Flash** for low-latency, high-accuracy reasoning.
+
+---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 - Node.js 18+
-- Google Cloud API Key (AI Studio)
+- Google Cloud API Key (from AI Studio)
 
 ### Installation
 
@@ -51,34 +63,25 @@ Built for the **Google Gemini 3 Global Hackathon**.
     ```bash
     npm run dev
     ```
-    *Note: The custom server handles both Next.js pages and WebSocket connections.*
 
-5.  **Open the App:**
-    Navigate to [http://localhost:3000](http://localhost:3000). Allow camera/microphone access.
+5.  **Access Mentus:**
+    Open [http://localhost:3000](http://localhost:3000) and grant camera/mic permissions.
 
-## 🏗 Architecture
-
-**User Flow:**
-1.  User starts a session; browser captures Video (Camera) and Audio (Microphone).
-2.  **Speech-to-Text** runs locally in the browser to transcribe user questions.
-3.  Every 10 seconds, a snapshot + transcript is sent via WebSocket to the Node.js server.
-4.  Server constructs a multimodal prompt and calls **Gemini 1.5 Flash API**.
-5.  AI response is sent back to the client and read aloud via **Text-to-Speech**.
+---
 
 ## 📝 Changelog
 
-### [0.4.0] - 2025-12-19
-**UI Overhaul & Voice Interaction**
-- **Added:** Browser-based Speech Recognition (STT) for user input.
-- **Changed:** Complete UI Redesign (Modern Minimalist / Premium aesthetic).
-- **Changed:** Switched to `gemini-flash-latest` for reliable multimodal analysis.
-- **Fixed:** WebSocket stability improvements.
+### [0.4.5] - 2025-12-19
+**Cinematic Final Polish**
+- **Added:** New Full-width Cinematic UI (95% viewport).
+- **Added:** Visual status indicators (Listening/Analyzing badges).
+- **Added:** Watermark branding and improved typography.
+- **Fixed:** Cleaned up `page.tsx` and removed all legacy UI elements.
 
 ### [0.3.0] - 2025-12-19
-**REST Architecture Migration**
-- Switched from Gemini Live API (WebSocket) to REST API to resolve quota issues.
-- Implemented snapshot-based analysis loop.
+**REST API Migration**
+- Implemented robust REST-based multimodal loop using `gemini-1.5-flash`.
 
 ### [0.1.0] - 2025-12-19
-**Initial Release**
-- Project scaffolding and basic WebSocket setup.
+**Initial Scaffolding**
+- Project setup with Next.js and custom WebSocket server.
