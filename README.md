@@ -71,6 +71,12 @@ Mentus uses a **Hybrid Snapshot Architecture**:
 
 ## 📝 Changelog
 
+### [0.4.6] - 2025-12-19
+**Vercel Deployment & Stability**
+- **Infrastructure:** Migrated API from `app/api` to `pages/api` for better Serverless compatibility on Vercel.
+- **Fix:** Resolved Gemini API 404 errors by forcing `gemini-flash-latest` model alias.
+- **Cleanup:** Removed dev-only scripts to fix build pipeline.
+
 ### [0.4.5] - 2025-12-19
 **Cinematic Final Polish**
 - **Added:** New Full-width Cinematic UI (95% viewport).
