@@ -33,17 +33,13 @@ export default function LiveStream() {
   
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const wsRef = useRef<WebSocket | null>(null);
+  // WebSocket removed
   const streamRef = useRef<MediaStream | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
-    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const host = window.location.host;
-    const wsUrl = `${protocol}://${host}/ws`;
-    const ws = new WebSocket(wsUrl);
-    wsRef.current = ws;
+    // WebSocket connection code removed
 
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (SpeechRecognition) {
@@ -63,17 +59,7 @@ export default function LiveStream() {
       recognitionRef.current = recognition;
     }
 
-    ws.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        if (data.type === 'text_response') {
-          setIsAnalyzing(false);
-          setLastResponse(data.payload);
-          speak(data.payload);
-        }
-      } catch (e) { console.error(e); }
-    };
-    return () => { if (ws.readyState === WebSocket.OPEN) ws.close(); stopStreaming(); };
+    return () => { stopStreaming(); };
   }, []);
 
   const speak = (text: string) => {
@@ -89,6 +75,8 @@ export default function LiveStream() {
       streamRef.current = stream;
       if (videoRef.current) videoRef.current.srcObject = stream;
       setIsStreaming(true);
+      setAudioEnabled(true);
+      setVideoEnabled(true);
       if (recognitionRef.current) try { recognitionRef.current.start(); } catch (e) {}
       startSnapshotLoop();
     } catch (err: any) { alert(`Access Denied: ${err.message}`); }
@@ -116,18 +104,35 @@ export default function LiveStream() {
   };
 
   const startSnapshotLoop = () => {
-    intervalRef.current = setInterval(() => {
-      if (!canvasRef.current || !videoRef.current || !wsRef.current) return;
-      if (wsRef.current.readyState !== WebSocket.OPEN) return;
+    intervalRef.current = setInterval(async () => {
+      if (!canvasRef.current || !videoRef.current) return;
+      
       const context = canvasRef.current.getContext('2d');
       if (context) {
         setIsAnalyzing(true);
         context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
-        wsRef.current.send(JSON.stringify({
-          type: 'multimodal_chunk',
-          payload: { image: canvasRef.current.toDataURL('image/jpeg', 0.5), text: transcript || "User is silent." }
-        }));
-        setTranscript('');
+        
+        const imageData = canvasRef.current.toDataURL('image/jpeg', 0.5);
+        const currentText = transcript; 
+        setTranscript(''); // Clear buffer immediately
+
+        try {
+          const response = await fetch('/api/gemini', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ image: imageData, text: currentText })
+          });
+          
+          const data = await response.json();
+          if (data.text) {
+            setLastResponse(data.text);
+            speak(data.text);
+          }
+        } catch (error) {
+          console.error('API Error:', error);
+        } finally {
+          setIsAnalyzing(false);
+        }
       }
     }, 10000); 
   };
