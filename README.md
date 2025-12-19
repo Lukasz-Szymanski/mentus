@@ -1,28 +1,33 @@
-# Mentus - Real-time AI Mentor
+# Mentus - AI Reality Companion
 
-**Mentus** is a real-time, multimodal AI application designed to act as a hands-free mentor for physical tasks. Powered by Google's **Gemini 2.0 Flash (Live API)**, it watches your video stream, listens to your voice, and provides instant audio feedback, making it ideal for cooking, mechanics, or DIY projects.
+**Mentus** is a real-time, multimodal AI mentor designed to guide you through physical tasks. Powered by **Google Gemini 1.5 Flash**, it sees what you see, hears what you say, and provides instant audio-visual guidance.
 
-## 🚀 Key Features
+Built for the **Google Gemini 3 Global Hackathon**.
 
-- **Real-time Multimodal Interaction:** Processes video and audio simultaneously.
-- **Low Latency:** Optimized WebSocket pipeline for sub-500ms response times.
-- **Hands-Free UX:** Voice-first interface with "Barge-in" support.
-- **Privacy-Focused:** Acts as a proxy server; API keys are never exposed to the client.
+![Status](https://img.shields.io/badge/Status-Beta_v3.0-success) ![Stack](https://img.shields.io/badge/Stack-Next.js_14_|_Node_|_Gemini_Flash-blue)
+
+## ✨ Key Features
+
+- **Vision:** Real-time analysis of your camera feed (snapshots every 10s).
+- **Voice:** Understands your spoken questions via browser Speech Recognition.
+- **Speech:** Replies to you with natural Text-to-Speech synthesis.
+- **Design:** Premium, minimalist UI inspired by modern OS aesthetics.
+- **Architecture:** Robust REST-based integration ensuring stability on all API tiers.
 
 ## 🛠 Tech Stack
 
-- **Frontend:** Next.js 16 (App Router), TypeScript, Tailwind CSS
-- **Backend:** Custom Node.js Server (`server.ts`) with `ws` (WebSockets)
-- **AI Model:** Google Gemini 2.0 Flash-Exp (via Multimodal Live API)
-- **Infrastructure:** Localhost (Dev), Docker (Future)
+- **Frontend:** Next.js 16 (App Router), TypeScript, Tailwind CSS.
+- **Backend:** Custom Node.js Server (`server.ts`) handling Multimodal Relay.
+- **AI Model:** Google Gemini 1.5 Flash (via Direct REST API).
+- **APIs:** WebSocket (Transport), Web Speech API (STT/TTS).
 
-## 📦 Installation & Setup
+## 🚀 Getting Started
 
 ### Prerequisites
 - Node.js 18+
-- Google Cloud API Key with access to Gemini 2.0 Flash
+- Google Cloud API Key (AI Studio)
 
-### Getting Started
+### Installation
 
 1.  **Clone the repository:**
     ```bash
@@ -35,53 +40,45 @@
     npm install
     ```
 
-3.  **Configure Environment:**
-    Create a `.env` file in the root of `mentus` directory:
+3.  **Environment Setup:**
+    Create a `.env` file in the root directory:
     ```env
     GOOGLE_API_KEY=your_google_api_key_here
     PORT=3000
     ```
 
 4.  **Run Development Server:**
-    We use a custom server to handle WebSockets alongside Next.js.
     ```bash
     npm run dev
     ```
-    *Note: Do not use `next dev`. Use `npm run dev` which maps to `tsx server.ts`.*
+    *Note: The custom server handles both Next.js pages and WebSocket connections.*
 
-5.  **Access the App:**
-    Open [http://localhost:3000](http://localhost:3000).
+5.  **Open the App:**
+    Navigate to [http://localhost:3000](http://localhost:3000). Allow camera/microphone access.
 
 ## 🏗 Architecture
 
-The application uses a **BFF (Backend for Frontend)** pattern:
-
-1.  **Client (Browser):** Captures MediaStream (Video/Audio), downsamples video frames to ~5 FPS, and streams binary data over WebSocket.
-2.  **Proxy Server (Node.js):** Receives the stream, authenticates with Google Cloud, and forwards the data to the Gemini Live API session.
-3.  **Gemini API:** Processes the multimodal input and streams back audio/text responses.
+**User Flow:**
+1.  User starts a session; browser captures Video (Camera) and Audio (Microphone).
+2.  **Speech-to-Text** runs locally in the browser to transcribe user questions.
+3.  Every 10 seconds, a snapshot + transcript is sent via WebSocket to the Node.js server.
+4.  Server constructs a multimodal prompt and calls **Gemini 1.5 Flash API**.
+5.  AI response is sent back to the client and read aloud via **Text-to-Speech**.
 
 ## 📝 Changelog
 
-### [0.3.0] - 2025-12-19
-**Successful AI Integration (REST Mode)**
-- **Added:** Direct REST API integration with `gemini-flash-latest`.
-- **Added:** Automated visual feedback loop (snapshots every 10s).
-- **Added:** Browser-based Text-to-Speech (TTS) for AI responses.
-- **Fixed:** Resolved 404 and 429 quota issues by switching to stable REST architecture.
-- **Changed:** Switched from continuous streaming to "snapshot-based" mentoring to stay within free tier limits.
+### [0.4.0] - 2025-12-19
+**UI Overhaul & Voice Interaction**
+- **Added:** Browser-based Speech Recognition (STT) for user input.
+- **Changed:** Complete UI Redesign (Modern Minimalist / Premium aesthetic).
+- **Changed:** Switched to `gemini-flash-latest` for reliable multimodal analysis.
+- **Fixed:** WebSocket stability improvements.
 
-### [0.2.0] - 2025-12-19
-**Client-Side Media Capture Implementation**
-- **Added:** Video capture via `navigator.mediaDevices` with real-time preview.
-- **Added:** Video frame sampling (Canvas API) at ~2 FPS, compressed to JPEG.
-- **Added:** Audio capture via `AudioContext` (16kHz sample rate).
-- **Added:** Conversion of microphone input to 16-bit PCM (Int16Array) for Gemini compatibility.
-- **Changed:** Optimized WebSocket message logging on server to prevent flooding.
+### [0.3.0] - 2025-12-19
+**REST Architecture Migration**
+- Switched from Gemini Live API (WebSocket) to REST API to resolve quota issues.
+- Implemented snapshot-based analysis loop.
 
 ### [0.1.0] - 2025-12-19
-**Initial Scaffolding & Infrastructure**
-- **Added:** Next.js 16 + TypeScript + Tailwind project structure.
-- **Added:** Custom Node.js server (`server.ts`) using `ws` library for WebSocket support.
-- **Added:** Basic `LiveStream.tsx` component to test WebSocket connection.
-- **Added:** `docs/plan.md` roadmap.
-- **Fixed:** Configured `tsx` for running TypeScript server in dev mode.
+**Initial Release**
+- Project scaffolding and basic WebSocket setup.

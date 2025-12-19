@@ -31,7 +31,7 @@ app.prepare().then(() => {
         const data = JSON.parse(message.toString());
 
         if (data.type === 'multimodal_chunk') {
-          const { image } = data.payload;
+          const { image, text } = data.payload;
           
           if (!image) return;
 
@@ -41,7 +41,7 @@ app.prepare().then(() => {
           const requestBody = {
             contents: [{
               parts: [
-                { text: "You are Mentus, an expert AI mentor. Watch this video frame. Provide helpful, short guidance (max 2 sentences)." },
+                { text: `You are Mentus, an expert AI mentor. Use the provided video frame and the user's spoken input: "${text || 'No spoken input'}". Provide helpful, short guidance (max 2 sentences).` },
                 {
                   inline_data: {
                     mime_type: "image/jpeg",
